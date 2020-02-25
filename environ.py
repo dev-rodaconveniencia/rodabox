@@ -18,6 +18,11 @@ import json
 _FILENAME = 'environ'
 _FILEPATH = './.%s' % _FILENAME
 
+if not os.path.isfile(_FILEPATH):
+  file = open(_FILEPATH, 'w')
+  file.write('{}')
+  file.close()
+
 def set(key, value):
   '''
     Cria uma variável de ambiente.
