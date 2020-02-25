@@ -55,7 +55,9 @@ def _wait_for_any(handles):
     except KeyboardInterrupt as ex:
       for handle in handles:
         handle.join()
-      reboot()
+      exit()
+      if not DEBUG:
+        reboot()
 
 @scrubs.handle.exception
 def ask_for_authentication():
