@@ -1,4 +1,6 @@
 '''
+  Este módulo gerencia todos os subprocessos de escuta para periféricos, auditors e processos
+  externos.
 '''
 
 import os
@@ -8,7 +10,6 @@ import time
 import json
 import socket
 import inspect
-import asyncio
 import workers
 import collections.abc
 
@@ -28,7 +29,6 @@ class Demonize:
   def response(self, response, wait=0.25, nice=0):
     if isinstance(response, dict):
       response = json.dumps(response)
-      print("aqui")
     time.sleep(wait)
     os.nice(nice)
     return response
@@ -125,13 +125,13 @@ class demonize:
       if pid != 'started_at':
         debug("Listen process %s." % pid)
         self.service.scheduler[pid] = None
-        self.threads = _hint_subthread(pid, instance, self.service).start()
+        _hint_subthread(pid, instance, self.service).start()
 
     # Lê os comandos externos
     while True:
       connection, address = self.socket.accept()
       try:
-        message = connection.recv(self.DEFAULT_BYTES_TRANSPORT_LEN).decode('utf-8')
+        message = connection.recv(int(os.environ['DEFAULT_BYTES_TRANSPORT_LEN'])).decode('utf-8')
         if message != '':
           self.service.scheduler["TERMINAL_PARSER_HASCOMMANDLINE"] = True
           self.service.scheduler["TERMINAL_LAST_COMMAND_LINE"] = message
@@ -145,15 +145,19 @@ class demonize:
         debug("Internal response error: %s." % str(ex))
 
   def __init__(self, host, port, *args, **kwargs):
-    self.DEFAULT_HOST_ENVIRON = host
-    self.DEFAULT_PORT_ENVIRON = port
-    self.DEFAULT_BYTES_TRANSPORT_LEN = int(os.environ['DEFAULT_BYTES_TRANSPORT_LEN'])
+    print(os.environ)
+    if host:
+      os.environ["RODABOX_SERVER_API_HOST"] = host
+    if port:
+      os.environ["RODABOX_SERVER_API_PORT"] = str(port)
 
     self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    self.socket.bind((self.DEFAULT_HOST_ENVIRON, self.DEFAULT_PORT_ENVIRON))
+    self.socket.bind((
+      os.environ["RODABOX_SERVER_IPC_HOST"],
+      int(os.environ["RODABOX_SERVER_IPC_PORT"]))
+    )
     self.socket.listen(1)
 
-    self.threads = None
     self.service = TaskService(scheduler=dict(
       started_at=str(datetime.now())
     ))

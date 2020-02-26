@@ -19,30 +19,28 @@ _FILENAME = 'environ'
 _FILEPATH = './.%s' % _FILENAME
 
 if not os.path.isfile(_FILEPATH):
-  default_file_string = '''
-    {
-      "RODABOX_LAST_GIT_COMMIT": "",
-      "RODABOX_LAST_LOGIN": "",
-      "RODABOX_PROJECT_AUTHOR": "Roda Conveniência Laboratory",
-      "RODABOX_PROJECT_NAME": "rodabox",
-      "RODABOX_PROJECT_VERSION": "0.0.1",
-      "RODABOX_SERVER_API_HOST": "0.0.0.0",
-      "RODABOX_SERVER_API_PORT": "5000",
-      "RODABOX_SERVER_BACKPACK_HOST": "0.0.0.0",
-      "RODABOX_SERVER_BACKPACK_PORT": "8000",
-      "RODABOX_SERVER_IPC_HOST": "0.0.0.0",
-      "RODABOX_SERVER_IPC_PORT": "6000",
-      "RODABOX_SERVER_PINPAD_HOST": "0.0.0.0",
-      "RODABOX_SERVER_PINPAD_PORT": "7000",
-      "RODABOX_TOKEN_GITHUB": "c309669c01a4c98920562364a40e64fd82c7b71a",
-      "RODABOX_TOKEN_WATCHMAN": "",
-      "RODABOX_UPDATED_AT": "",
-      "RODABOX_WAS_VALIDATED": ""
-    }
-  '''
-  file = open(_FILEPATH, 'w')
-  file.write(default_file_string)
-  file.close()
+  default = dict(
+    RODABOX_LAST_GIT_COMMIT = "",
+    RODABOX_LAST_LOGIN = "",
+    RODABOX_PROJECT_AUTHOR = "Roda Conveniência Laboratory",
+    RODABOX_PROJECT_NAME = "rodabox",
+    RODABOX_PROJECT_VERSION = "0.0.1",
+    RODABOX_SERVER_API_HOST = "0.0.0.0",
+    RODABOX_SERVER_API_PORT = "5000",
+    RODABOX_SERVER_BACKPACK_HOST = "0.0.0.0",
+    RODABOX_SERVER_BACKPACK_PORT = "8000",
+    RODABOX_SERVER_IPC_HOST = "0.0.0.0",
+    RODABOX_SERVER_IPC_PORT = "6000",
+    RODABOX_SERVER_PINPAD_HOST = "0.0.0.0",
+    RODABOX_SERVER_PINPAD_PORT = "7000",
+    RODABOX_TOKEN_GITHUB = "c309669c01a4c98920562364a40e64fd82c7b71a",
+    RODABOX_TOKEN_WATCHMAN = "",
+    RODABOX_UPDATED_AT = "",
+    RODABOX_WAS_VALIDATED = "",
+    RODABOX_DEFAULT_BYTES_TRANSPORT_LEN = "5000000"
+  )
+  with open(_FILEPATH, 'w') as file:
+    json.dump(default, file, ensure_ascii=False, sort_keys=True, indent=2)
 
 def set(key, value):
   '''

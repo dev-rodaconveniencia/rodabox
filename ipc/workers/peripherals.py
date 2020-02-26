@@ -1,8 +1,8 @@
-import ipc
+import daemon
 import subprocess
 import time
 
-class status(ipc.daemon.Demonize):
+class status(daemon.Demonize):
 
   def _list_devices(self):
     devices = list()

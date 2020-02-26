@@ -5,9 +5,9 @@ import json
 import socket
 import random
 
-import ipc
+import daemon
 
-class transaction(ipc.daemon.Demonize):
+class transaction(daemon.Demonize):
   PINPAD_SOCKET_ADDRESS = ('localhost', 9000)
   PINPAD_STONECODE = '164185121'
   DEFAULT_BYTES_TRANSPORT_LEN = int(os.environ["DEFAULT_BYTES_TRANSPORT_LEN"])

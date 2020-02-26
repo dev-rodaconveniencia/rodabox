@@ -1,6 +1,6 @@
-import ipc
+import daemon
 
-class parser(ipc.daemon.Demonize):
+class parser(daemon.Demonize):
   LAST_COMMAND_LINE = ''
 
   def _update_ethernet(self):

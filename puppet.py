@@ -32,12 +32,15 @@ import uuid
 import requests
 import threading
 import subprocess
+import setproctitle
 
 import environ
 import scrubs
 
 from datetime import datetime
 from sh import git, reboot, python, kill
+
+setproctitle.setproctitle('rodabox-puppet')
 
 _PIDS = list()
 DEBUG = True
@@ -179,9 +182,9 @@ if __name__ == '__main__':
     time.sleep(1)
 
   # Abre todos os serviços em threads
-  handles.append(threading.Thread(target=pinpad_service))
+  # handles.append(threading.Thread(target=pinpad_service))
   handles.append(threading.Thread(target=ipc_service))
-  handles.append(threading.Thread(target=backpack_service))
+  # handles.append(threading.Thread(target=backpack_service))
 
   # Espera a iterrupção do teclado
   _wait_for_any(handles)
