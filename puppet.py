@@ -176,9 +176,18 @@ if __name__ == '__main__':
   # Busca pela autenticação no servidor. Caso o raspberry esteja cadastrado, faz o login e pede o
   # token de autenticação. Depois guarda o token no .environ. Caso não haja autenticação, o servidor
   # irá mostrar ao manager que um usuário pediu autenticação.
-  while (token := ask_for_authentication()) is not True: # PEP 572
+
+  # TODO: PEP572
+  # while (token := ask_for_authentication()) is not True:
+  #   if token != None:
+  #     environ.set('RODABOX_TOKEN_WATCHMAN', token)
+  #   time.sleep(1)
+
+  while True:
+    token = ask_for_authentication()
     if token != None:
       environ.set('RODABOX_TOKEN_WATCHMAN', token)
+      break
     time.sleep(1)
 
   # Abre todos os serviços em threads
