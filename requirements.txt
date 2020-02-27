@@ -14,6 +14,9 @@ PyGithub==1.45
 PyJWT==1.7.1
 pytz==2019.3
 requests==2.21.0
+Send2Trash==1.5.0
+setproctitle==1.1.10
+sh==1.12.14
 six==1.12.0
 sqlparse==0.3.0
 stevedore==1.31.0
