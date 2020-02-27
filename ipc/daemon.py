@@ -3,6 +3,9 @@
   externos.
 '''
 
+import pickle
+import base64
+
 import os
 import sys
 import glob
@@ -57,6 +60,8 @@ class _hint_subthread(Thread):
         if last_checked_response[self.name] != self.process():
           last_checked_response[self.name] = self.process()
           self.service.scheduler.update(last_checked_response)
+          p = pickle.dumps(self.service.scheduler)
+          d = base64.b64encode(p)
           debug("Detect change at %s." % self.name)
     except Exception as ex:
       debug("A exception as ocurred at %s: %s" % (self.name, ex))
@@ -145,7 +150,8 @@ class demonize:
         debug("Internal response error: %s." % str(ex))
 
   def __init__(self, host, port, *args, **kwargs):
-    print(os.environ)
+    ''' Inicia o orquestrador de threads '''
+
     if host:
       os.environ["RODABOX_SERVER_API_HOST"] = host
     if port:
@@ -154,8 +160,8 @@ class demonize:
     self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     self.socket.bind((
       os.environ["RODABOX_SERVER_IPC_HOST"],
-      int(os.environ["RODABOX_SERVER_IPC_PORT"]))
-    )
+      int(os.environ["RODABOX_SERVER_IPC_PORT"])
+    ))
     self.socket.listen(1)
 
     self.service = TaskService(scheduler=dict(
